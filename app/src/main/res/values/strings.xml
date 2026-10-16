@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">dzaki_3tia</string>
+    <string name="deskripsi">Selamat Datang!</string>
+    <string name="deskripsiTema">SiPekan (Sistem Informasi Pekanbaru) adalah purwarupa portal informasi terpadu yang dirancang untuk mendukung ekosistem Smart City. Aplikasi ini hadir sebagai wadah tunggal untuk memudahkan warga kota mengakses berbagai layanan publik secara terpusat dan praktis.\n\nFokus utama sistem ini meliputi sentralisasi data penting kota, seperti informasi fasilitas kesehatan, nomor darurat, jadwal transportasi umum, serta pengumuman layanan masyarakat secara real-time.\n\nMelalui antarmuka yang modern dan terstruktur, SiPekan bertujuan untuk meningkatkan efisiensi pencarian informasi, sehingga aktivitas warga menjadi lebih terhubung dan nyaman.</string>
+</resources>
