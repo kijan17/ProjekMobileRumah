@@ -5,4 +5,6 @@
     <color name="btn_login">#03c2fc</color>
     <color name="darkblue">#000080</color>
     <color name="softblue">#c6e2ff</color>
+    <color name="primary">#018790</color>
+    <color name="sekunder">#E3F2FD</color>
 </resources>

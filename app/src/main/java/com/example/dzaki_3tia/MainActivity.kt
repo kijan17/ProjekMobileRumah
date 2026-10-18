@@ -24,19 +24,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        binding.btnDetail.setOnClickListener {
-            val intent = Intent(this, DetailActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.btnLogout.setOnClickListener {
-            MaterialAlertDialogBuilder(this).setTitle("Yakin Log Out?").setNegativeButton("Tidak", null)
-                .setPositiveButton("Iya",) { _, _ ->
-                    val pindahLogin = Intent(this, LoginActivity::class.java)
-                    startActivity(pindahLogin)
-                }
-                .show()
-        }
 
     }
 }
