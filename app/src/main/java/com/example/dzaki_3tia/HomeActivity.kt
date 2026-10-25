@@ -1,12 +1,11 @@
 package com.example.dzaki_3tia
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import com.example.dzaki_3tia.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
@@ -18,51 +17,43 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Ubah bottom menjadi 0 agar tidak ada jarak kosong di bawah BottomNavigationView (Modul hal. 6)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
             insets
         }
 
-        // 1. Terapkan Toolbar sesuai instruksi tugas Pertemuan 6
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.apply {
-            title = "CIVIKA"
-            subtitle = "Pekanbaru Smart City"
-        }
+        // Tampilkan HomeFragment saat pertama kali masuk
+        replaceFragment(HomeFragment())
 
-        // 2. Ambil username dari SharedPreferences untuk sapaan (Latihan Mandiri 5.1)
-        val sharedPref = getSharedPreferences("user_pref", MODE_PRIVATE)
-        val username = sharedPref.getString("username", "WARGA")
-        binding.tvGreeting.text = "HALO, ${username?.uppercase()}!"
-
-        // 3. Fungsi Dialog Logout sesuai Modul Pertemuan 6
-        val showLogoutDialog = {
-            AlertDialog.Builder(this)
-                .setTitle("Logout")
-                .setMessage("Apakah Anda yakin ingin keluar?")
-                .setPositiveButton("Ya") { dialog, _ ->
-                    // Hapus data login dari SharedPreferences
-                    val editor = sharedPref.edit()
-                    editor.clear()
-                    editor.apply()
-
-                    dialog.dismiss()
-
-                    // Arahkan kembali ke LoginActivity dan bersihkan tumpukan halaman
-                    val intent = Intent(this, LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    finish()
+        // Ganti Fragment saat menu Bottom Navigation diklik
+        binding.bottomNavView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_home -> {
+                    replaceFragment(HomeFragment())
+                    true
                 }
-                .setNegativeButton("Batal") { dialog, _ ->
-                    dialog.dismiss()
+                R.id.nav_cari -> {
+                    replaceFragment(CariFragment())
+                    true
                 }
-                .show()
+                R.id.nav_favorit -> {
+                    replaceFragment(FavoritFragment())
+                    true
+                }
+                R.id.nav_profil -> {
+                    replaceFragment(ProfilFragment())
+                    true
+                }
+                else -> false
+            }
         }
+    }
 
-        // Aktifkan tombol Logout & tombol Profil kanan atas untuk memicu dialog Logout
-        binding.btnLogout.setOnClickListener { showLogoutDialog() }
-        binding.btnProfile.setOnClickListener { showLogoutDialog() }
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(binding.fragmentContainer.id, fragment)
+            .commit()
     }
 }
