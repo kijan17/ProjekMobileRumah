@@ -7,4 +7,13 @@
     <color name="softblue">#c6e2ff</color>
     <color name="primary">#018790</color>
     <color name="sekunder">#E3F2FD</color>
+    <color name="civika_teal">#008080</color>
+    <color name="civika_teal_dark">#006666</color>
+    <color name="civika_teal_soft">#E6F4F1</color>
+    <color name="civika_bg">#EAF4FA</color>
+    <color name="civika_navy">#0F172A</color>
+    <color name="civika_slate">#64748B</color>
+    <color name="civika_amber">#F59E0B</color>
+    <color name="civika_amber_soft">#FFFBEB</color>
+    <color name="civika_red">#EF4444</color>
 </resources>

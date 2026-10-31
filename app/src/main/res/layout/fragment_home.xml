@@ -4,15 +4,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAF4FA">
+    android:background="@color/civika_bg">
+
+    <!-- Header Melengkung CIVIKA (bg_header_wave) -->
+    <View
+        android:id="@+id/background_header"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:background="@drawable/bg_header_wave"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="#008080"
-        app:title="CIVIKA - Home"
-        app:titleTextColor="@android:color/white"
+        android:background="@android:color/transparent"
+        app:title="CIVIKA"
+        app:subtitle="Pekanbaru Smart City"
+        app:titleTextColor="@color/white"
+        app:subtitleTextColor="@color/civika_teal_soft"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -21,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/background_header"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
@@ -29,10 +41,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="24dp"
-            android:paddingTop="24dp"
+            android:paddingTop="8dp"
             android:paddingBottom="28dp">
 
-            <!-- HEADER -->
+            <!-- 1. HEADER SAPAAN WARGA -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -48,8 +60,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:letterSpacing="0.05"
-                        android:text="PEKANBARU SMART CITY"
-                        android:textColor="#008080"
+                        android:text="LAYANAN TERPADU WARGA"
+                        android:textColor="@color/civika_teal"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -59,8 +71,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="HALO, WARGA!"
-                        android:textColor="#0F172A"
-                        android:textSize="24sp"
+                        android:textColor="@color/civika_navy"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -71,219 +83,158 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/user"
-                    app:backgroundTint="#FFFFFF"
-                    app:tint="#0F172A"
+                    app:backgroundTint="@color/white"
+                    app:tint="@color/civika_navy"
                     app:elevation="3dp"
                     app:fabCustomSize="48dp"
                     app:maxImageSize="24dp" />
             </RelativeLayout>
 
-            <!-- SEARCH BAR -->
-            <androidx.cardview.widget.CardView
+            <!-- 2. SEARCH BAR DENGAN BG_ROUNDED_CONTAINER -->
+            <EditText
+                android:id="@+id/etSearch"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_marginTop="22dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="27dp"
-                app:cardElevation="3dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_rounded_container"
+                android:drawableStart="@android:drawable/ic_menu_search"
+                android:drawablePadding="10dp"
+                android:hint="Cari layanan &amp; fasilitas kota..."
+                android:inputType="text"
+                android:textColor="@color/civika_navy"
+                android:textColorHint="@color/civika_slate"
+                android:textSize="14sp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="20dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@android:drawable/ic_menu_search"
-                        app:tint="#94A3B8" />
-
-                    <EditText
-                        android:id="@+id/etSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="12dp"
-                        android:background="@android:color/transparent"
-                        android:hint="Cari layanan &amp; fasilitas..."
-                        android:inputType="text"
-                        android:textColor="#0F172A"
-                        android:textColorHint="#94A3B8"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- KATEGORI LAYANAN -->
+            <!-- 3. CHIPGROUP FILTER LAYANAN -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="26dp"
-                android:layout_marginBottom="12dp"
-                android:text="Kategori Layanan"
-                android:textColor="#0F172A"
-                android:textSize="16sp"
+                android:layout_marginTop="18dp"
+                android:text="Filter Kategori Layanan"
+                android:textColor="@color/civika_navy"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSemua"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Semua" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSiaga"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Siaga 24 Jam" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipPublik"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pelayanan Publik" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- 4. GRIDLAYOUT MENU LAYANAN KOTA (6 Tombol 3 Kolom) -->
+            <androidx.gridlayout.widget.GridLayout
+                android:id="@+id/gridMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="-7dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                app:columnCount="3"
+                app:useDefaultMargins="true">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardCatKesehatan"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGridKesehatan"
                     android:layout_width="0dp"
-                    android:layout_height="135dp"
-                    android:layout_margin="7dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="22dp"
-                    app:cardElevation="2dp">
+                    android:layout_height="wrap_content"
+                    android:text="Kesehatan"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    app:backgroundTint="@color/civika_teal"
+                    app:cornerRadius="14dp"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="✚"
-                            android:textColor="#F59E0B"
-                            android:textSize="28sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Kesehatan"
-                            android:textColor="#0F172A"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardCatKeamanan"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGridKeamanan"
                     android:layout_width="0dp"
-                    android:layout_height="135dp"
-                    android:layout_margin="7dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="22dp"
-                    app:cardElevation="2dp">
+                    android:layout_height="wrap_content"
+                    android:text="Keamanan"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    app:backgroundTint="@color/civika_teal"
+                    app:cornerRadius="14dp"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🛡️"
-                            android:textSize="26sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Keamanan"
-                            android:textColor="#0F172A"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="-7dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardCatTransportasi"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGridTransportasi"
                     android:layout_width="0dp"
-                    android:layout_height="135dp"
-                    android:layout_margin="7dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="22dp"
-                    app:cardElevation="2dp">
+                    android:layout_height="wrap_content"
+                    android:text="Bus TMP"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    app:backgroundTint="@color/civika_teal"
+                    app:cornerRadius="14dp"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🚌"
-                            android:textSize="26sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Transportasi"
-                            android:textColor="#0F172A"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardCatAdministrasi"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGridDukcapil"
                     android:layout_width="0dp"
-                    android:layout_height="135dp"
-                    android:layout_margin="7dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="22dp"
-                    app:cardElevation="2dp">
+                    android:layout_height="wrap_content"
+                    android:text="Disdukcapil"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    app:backgroundTint="@color/civika_teal"
+                    app:cornerRadius="14dp"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGridPajak"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Info Pajak"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    app:backgroundTint="@color/civika_teal"
+                    app:cornerRadius="14dp"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🏢"
-                            android:textSize="26sp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGridCCTV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Pantau CCTV"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    app:backgroundTint="@color/civika_teal"
+                    app:cornerRadius="14dp"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal" />
+            </androidx.gridlayout.widget.GridLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Administrasi"
-                            android:textColor="#0F172A"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <!-- KONTAK DARURAT CEPAT -->
+            <!-- 5. KONTAK DARURAT CEPAT -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:text="Kontak Darurat Cepat"
-                android:textColor="#0F172A"
-                android:textSize="16sp"
+                android:textColor="@color/civika_navy"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -296,11 +247,11 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/btnAmbulans"
                     android:layout_width="0dp"
-                    android:layout_height="56dp"
+                    android:layout_height="54dp"
                     android:layout_margin="7dp"
                     android:layout_weight="1"
-                    app:cardBackgroundColor="#EF4444"
-                    app:cardCornerRadius="18dp">
+                    app:cardBackgroundColor="@color/civika_red"
+                    app:cardCornerRadius="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -311,9 +262,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🚑  Ambulans"
-                            android:textColor="#FFFFFF"
-                            android:textSize="14sp"
+                            android:text="🚑  Ambulans (119)"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -321,11 +272,11 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/btnPolisi"
                     android:layout_width="0dp"
-                    android:layout_height="56dp"
+                    android:layout_height="54dp"
                     android:layout_margin="7dp"
                     android:layout_weight="1"
-                    app:cardBackgroundColor="#EF4444"
-                    app:cardCornerRadius="18dp">
+                    app:cardBackgroundColor="@color/civika_red"
+                    app:cardCornerRadius="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -336,9 +287,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🚨  Polisi"
-                            android:textColor="#FFFFFF"
-                            android:textSize="14sp"
+                            android:text="🚨  Polisi (110)"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -348,10 +299,10 @@
                 android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="#D32F2F"
+                android:layout_marginTop="18dp"
+                android:backgroundTint="@color/civika_red"
                 android:text="Logout"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
         </LinearLayout>
