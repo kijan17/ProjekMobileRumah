@@ -51,9 +51,9 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainer.id, fragment)
-            .commit()
+        private fun replaceFragment(fragment: Fragment) {
+            supportFragmentManager.beginTransaction()
+                .replace(binding.fragmentContainer.id, fragment)
+                .commit()
     }
 }
