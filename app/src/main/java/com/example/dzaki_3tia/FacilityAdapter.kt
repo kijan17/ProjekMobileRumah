@@ -1,42 +1,41 @@
 package com.example.dzaki_3tia
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.dzaki_3tia.databinding.ItemFacilityBinding
-import com.google.android.material.snackbar.Snackbar
 
 class FacilityAdapter(
-    context: Context,
-    private val facilities: List<FacilityModel>
-) : ArrayAdapter<FacilityModel>(context, 0, facilities) {
+    private var facilityList: List<FacilityModel>,
+    private val onItemClick: (FacilityModel) -> Unit
+) : RecyclerView.Adapter<FacilityAdapter.FacilityViewHolder>() {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val binding = ItemFacilityBinding.inflate(LayoutInflater.from(context), parent, false)
-        val view = binding.root
-        val data = facilities[position]
+    inner class FacilityViewHolder(val binding: ItemFacilityBinding) : RecyclerView.ViewHolder(binding.root)
 
-        Glide.with(context)
-            .load(data.imageUrl)
-            .placeholder(R.drawable.logo_civika)
-            .error(R.drawable.logo_civika)
-            .into(binding.avatarImg)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FacilityViewHolder {
+        val binding = ItemFacilityBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return FacilityViewHolder(binding)
+    }
 
-        binding.textSender.text = data.name
-        binding.textMessage.text = data.address
-        binding.textTime.text = data.statusTime
+    override fun onBindViewHolder(holder: FacilityViewHolder, position: Int) {
+        val item = facilityList[position]
+        with(holder.binding) {
+            tvNama.text = item.nama
+            tvKategori.text = item.kategori
+            tvDeskripsi.text = item.deskripsi
+            // Load gambar pakai Glide
+            Glide.with(holder.itemView.context).load(item.imageUrl).into(imgFacility)
 
-        view.setOnClickListener {
-            Snackbar.make(
-                parent,
-                "${data.name} - ${data.address} (${data.statusTime})",
-                Snackbar.LENGTH_SHORT
-            ).show()
+            root.setOnClickListener { onItemClick(item) }
         }
+    }
 
-        return view
+    override fun getItemCount(): Int = facilityList.size
+
+    // Fungsi tambahan untuk mengupdate list saat difilter
+    fun updateData(newList: List<FacilityModel>) {
+        facilityList = newList
+        notifyDataSetChanged()
     }
 }

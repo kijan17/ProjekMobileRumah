@@ -1,40 +1,50 @@
 package com.example.dzaki_3tia
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dzaki_3tia.databinding.FragmentCariBinding
 
 class CariFragment : Fragment() {
     private var _binding: FragmentCariBinding? = null
     private val binding get() = _binding!!
+    private lateinit var adapter: FacilityAdapter
 
-    private val facilityList = listOf(
-        FacilityModel("RSUD Arifin Achmad", "Jl. Diponegoro No.2, Pekanbaru", "24 Jam", "https://cdn-icons-png.flaticon.com/512/2966/2966327.png"),
-        FacilityModel("Mal Pelayanan Publik (MPP)", "Jl. Jend. Sudirman No.464, Pekanbaru", "08.00-16.00", "https://cdn-icons-png.flaticon.com/512/1584/1584961.png"),
-        FacilityModel("Polresta Pekanbaru", "Jl. Ahmad Yani No.11, Pekanbaru", "24 Jam", "https://cdn-icons-png.flaticon.com/512/2561/2561978.png"),
-        FacilityModel("RS Awal Bros Sudirman", "Jl. Jend. Sudirman No.117, Pekanbaru", "24 Jam", "https://cdn-icons-png.flaticon.com/512/2966/2966327.png"),
-        FacilityModel("Dinas Pemadam Kebakaran", "Jl. Cempaka No.31, Pekanbaru", "24 Jam", "https://cdn-icons-png.flaticon.com/512/785/785116.png"),
-        FacilityModel("Bandara SSK II Pekanbaru", "Jl. Perhubungan, Simpang Tiga", "05.00-23.00", "https://cdn-icons-png.flaticon.com/512/3125/3125713.png"),
-        FacilityModel("Terminal Bandar Raya Payung Sekaki", "Jl. Tuanku Tambusai Ujung", "24 Jam", "https://cdn-icons-png.flaticon.com/512/3448/3448339.png"),
-        FacilityModel("Puskesmas Lima Puluh", "Jl. Sumber Sari, Sekip, Pekanbaru", "07.30-14.30", "https://cdn-icons-png.flaticon.com/512/2966/2966327.png"),
-        FacilityModel("Disdukcapil Kota Pekanbaru", "Komplek MPP Jl. Jend. Sudirman", "08.00-15.30", "https://cdn-icons-png.flaticon.com/512/1584/1584961.png"),
-        FacilityModel("Halte Trans Metro Sudirman", "Jl. Jend. Sudirman, Pusat Kota", "06.00-20.00", "https://cdn-icons-png.flaticon.com/512/3448/3448339.png")
+    // Data Master lengkap dengan Nomor Telepon dan Link Web Resmi
+    private val allData = listOf(
+        FacilityModel(
+            "RSUD Arifin Achmad", "Kesehatan",
+            "Jl. Diponegoro No.2, Pekanbaru (Buka 24 Jam)",
+            "https://picsum.photos/seed/rsud/400/300",
+            "076121618", "https://rsudarifinachmad.riau.go.id"
+        ),
+        FacilityModel(
+            "Puskesmas Rumbai", "Kesehatan",
+            "Jl. Sekolah No.54, Meranti Pandak, Rumbai",
+            "https://picsum.photos/seed/puskes/400/300",
+            "076151015", "https://dinkes.pekanbaru.go.id"
+        ),
+        FacilityModel(
+            "Polresta Pekanbaru", "Keamanan",
+            "Jl. Jend. Ahmad Yani No.11, Pekanbaru",
+            "https://picsum.photos/seed/polres/400/300",
+            "110", "https://polrestapekanbaru.com"
+        ),
+        FacilityModel(
+            "Pemadam Kebakaran Kota", "Keamanan",
+            "Jl. Cempaka No.31, Sukajadi, Pekanbaru",
+            "https://picsum.photos/seed/damkar/400/300",
+            "113", "https://pekanbaru.go.id"
+        )
     )
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentCariBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -42,29 +52,33 @@ class CariFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Cari Fasilitas Kota"
-
-        // Pasang Option Menu sesuai Modul 9 Tahap 5.4
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menu.clear()
-                menuInflater.inflate(R.menu.message_toolbar_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.action_tutorial -> {
-                        startActivity(Intent(requireContext(), TutorialMessageActivity::class.java))
-                        true
+        // Saat item diklik, munculkan pilihan Telepon atau Buka Website
+        adapter = FacilityAdapter(allData) { item ->
+            val opsi = arrayOf("Hubungi Telepon (${item.telepon})", "Kunjungi Website Resmi")
+            AlertDialog.Builder(requireContext())
+                .setTitle(item.nama)
+                .setItems(opsi) { _, which ->
+                    when (which) {
+                        0 -> startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${item.telepon}")))
+                        1 -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.webUrl)))
                     }
-                    else -> false
                 }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+                .setNegativeButton("Batal", null)
+                .show()
+        }
 
-        val adapter = FacilityAdapter(requireContext(), facilityList)
-        binding.listFacilityItems.adapter = adapter
+        binding.rvFasilitas.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvFasilitas.adapter = adapter
+
+        // Filter ChipGroup
+        binding.chipGroupKategori.setOnCheckedChangeListener { _, checkedId ->
+            val filteredList = when (checkedId) {
+                R.id.chipKesehatan -> allData.filter { it.kategori == "Kesehatan" }
+                R.id.chipKeamanan -> allData.filter { it.kategori == "Keamanan" }
+                else -> allData
+            }
+            adapter.updateData(filteredList)
+        }
     }
 
     override fun onDestroyView() {

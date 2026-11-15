@@ -1,8 +1,10 @@
 package com.example.dzaki_3tia
 
 data class FacilityModel(
-    val name: String,
-    val address: String,
-    val statusTime: String,
-    val imageUrl: String
+    val nama: String,
+    val kategori: String,
+    val deskripsi: String,
+    val imageUrl: String,
+    val telepon: String,
+    val webUrl: String
 )

@@ -7,21 +7,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.dzaki_3tia.databinding.FragmentHomeBinding
-import com.google.android.material.chip.Chip
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -29,68 +22,42 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
-
+        // 1. Ambil nama user dari SharedPreferences saat Login
         val sharedPref = requireContext().getSharedPreferences("user_pref", Context.MODE_PRIVATE)
         val username = sharedPref.getString("username", "Warga")
-        binding.tvGreeting.text = "HALO, ${username?.uppercase()}!"
+        binding.tvGreeting.text = "Halo, $username!"
 
-        // Listener ChipGroup sesuai Modul 9
-        binding.chipGroupFilter.setOnCheckedStateChangeListener { group, checkedIds ->
-            val selectedChipId = checkedIds.firstOrNull()
-            if (selectedChipId != null) {
-                val chip = group.findViewById<Chip>(selectedChipId)
-                Toast.makeText(requireContext(), "Filter: ${chip.text}", Toast.LENGTH_SHORT).show()
-            }
+        // 2. Klik Ikon Info atau Banner -> Buka TutorialMessageActivity yang sudah ada
+        val bukaTutorial = View.OnClickListener {
+            startActivity(Intent(requireContext(), TutorialMessageActivity::class.java))
         }
+        binding.btnTutorial.setOnClickListener(bukaTutorial)
+        binding.cardBanner.setOnClickListener(bukaTutorial)
 
-        // Listener 6 Tombol GridLayout
-        binding.btnGridKesehatan.setOnClickListener {
-            Toast.makeText(requireContext(), "Layanan: Fasilitas Kesehatan", Toast.LENGTH_SHORT).show()
+        // 3. Klik Search Bar atau "Lihat Direktori" -> Pindah ke Tab Cari
+        val pindahKeCari = View.OnClickListener {
+            (activity as? HomeActivity)?.pindahKeTabCari()
         }
-        binding.btnGridKeamanan.setOnClickListener {
-            Toast.makeText(requireContext(), "Layanan: Pos Keamanan Kota", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnGridTransportasi.setOnClickListener {
-            Toast.makeText(requireContext(), "Layanan: Rute Bus Trans Metro", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnGridDukcapil.setOnClickListener {
-            Toast.makeText(requireContext(), "Layanan: Administrasi Disdukcapil", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnGridPajak.setOnClickListener {
-            Toast.makeText(requireContext(), "Layanan: Informasi Pajak Daerah", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnGridCCTV.setOnClickListener {
-            Toast.makeText(requireContext(), "Layanan: Pantauan CCTV Jalan Raya", Toast.LENGTH_SHORT).show()
-        }
+        binding.cardSearchShortcut.setOnClickListener(pindahKeCari)
+        binding.tvViewAll.setOnClickListener(pindahKeCari)
 
-        // Kontak Darurat
+        // 4. Klik Tombol Darurat -> Langsung mengarah ke Telepon HP (ACTION_DIAL)
         binding.btnAmbulans.setOnClickListener {
             startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:119")))
         }
+
         binding.btnPolisi.setOnClickListener {
             startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:110")))
         }
 
-        // Logout
-        val logoutAction = {
-            AlertDialog.Builder(requireContext())
-                .setTitle("Logout")
-                .setMessage("Apakah Anda yakin ingin keluar?")
-                .setPositiveButton("Ya") { dialog, _ ->
-                    sharedPref.edit().clear().apply()
-                    dialog.dismiss()
-
-                    val intent = Intent(requireContext(), LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                }
-                .setNegativeButton("Batal") { dialog, _ -> dialog.dismiss() }
-                .show()
+        // 5. Klik Kartu Web -> Langsung membuka Browser ke Web Resmi (ACTION_VIEW)
+        binding.btnPortalPemko.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://pekanbaru.go.id")))
         }
 
-        binding.btnLogout.setOnClickListener { logoutAction() }
-        binding.btnProfile.setOnClickListener { logoutAction() }
+        binding.btnMppWeb.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://mpp.pekanbaru.go.id")))
+        }
     }
 
     override fun onDestroyView() {

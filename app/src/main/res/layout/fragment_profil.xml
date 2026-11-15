@@ -1,86 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/civika_bg">
+    android:orientation="vertical"
+    android:background="#F5F5F5">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/civika_teal"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:title="Profil &amp; Pengaduan Warga"
-            app:titleTextColor="@color/white" />
-    </com.google.android.material.appbar.AppBarLayout>
-
+    <!-- Header Profil & Tombol Logout -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:padding="24dp"
+        android:gravity="center"
+        android:background="#0097A7">
 
-        <!-- FORM PENGADUAN WARGA (TextInputLayout & MaterialButton Modul 9) -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_profile"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:text="M. Dzaki Farizan"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Kirim Aspirasi / Laporan Cepat"
-                android:textColor="@color/civika_navy"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Subjek Laporan Warga"
-                app:startIconDrawable="@drawable/ic_edit"
-                app:endIconMode="clear_text"
-                app:helperText="Contoh: Lampu jalan padam di Jl. Sudirman"
-                app:counterEnabled="true"
-                app:counterMaxLength="30">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etLaporan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnKirimLaporan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Kirim Laporan ke Pemko"
-                app:backgroundTint="@color/civika_teal"
-                app:cornerRadius="12dp" />
-        </LinearLayout>
-
-        <!-- DAFTAR PENGATURAN PROFIL (Simple List Item 1) -->
-        <ListView
-            android:id="@+id/listViewProfil"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:background="@color/white" />
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            app:backgroundTint="#D32F2F"
+            app:cornerRadius="8dp"
+            android:layout_marginTop="12dp"/>
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!-- TabLayout untuk Menu Bawahnya -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutProfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="#0097A7"
+        app:tabSelectedTextColor="#0097A7"
+        app:tabTextColor="#757575"
+        android:background="@color/white"/>
+
+    <!-- ViewPager2 untuk isi Konten Tab -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerProfil"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

@@ -16,4 +16,6 @@
     <color name="civika_amber">#F59E0B</color>
     <color name="civika_amber_soft">#FFFBEB</color>
     <color name="civika_red">#EF4444</color>
+    <color name="teal_utama">#0097A7</color>
+    <color name="ungu_kapsul_aktif">#E8E0F0</color> <!-- Warna ungu pudar seperti di gambar -->
 </resources>

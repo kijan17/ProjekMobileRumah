@@ -1,33 +1,20 @@
 package com.example.dzaki_3tia
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.dzaki_3tia.databinding.FragmentProfilBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
 class ProfilFragment : Fragment() {
     private var _binding: FragmentProfilBinding? = null
     private val binding get() = _binding!!
 
-    private val menuProfilList = listOf(
-        "Informasi Akun Warga (NIK Terdaftar)",
-        "Nomor Darurat Keluarga",
-        "Riwayat Laporan Layanan Kota",
-        "Pengaturan Notifikasi Darurat",
-        "Panduan Penggunaan CIVIKA",
-        "Pusat Bantuan Pemerintah Kota Pekanbaru",
-        "Tentang Aplikasi CIVIKA v1.0"
-    )
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentProfilBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,30 +22,31 @@ class ProfilFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Profil & Pengaduan"
+        val sharedPref = requireContext().getSharedPreferences("user_pref", Context.MODE_PRIVATE)
 
-        binding.btnKirimLaporan.setOnClickListener {
-            val isiLaporan = binding.etLaporan.text.toString().trim()
-            if (isiLaporan.isNotEmpty()) {
-                Toast.makeText(requireContext(), "Laporan terkirim: $isiLaporan", Toast.LENGTH_SHORT).show()
-                binding.etLaporan.text?.clear()
-            } else {
-                Toast.makeText(requireContext(), "Silahkan isi subjek laporan terlebih dahulu", Toast.LENGTH_SHORT).show()
+        // 1. Aksi Tombol Logout (Hapus session login agar kembali ke halaman Login)
+        binding.btnLogout.setOnClickListener {
+            sharedPref.edit().clear().apply()
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+            requireActivity().finish()
+        }
+
+        // 2. Pasang Adapter ViewPager
+        val tabsAdapter = ProfilTabsAdapter(this)
+        binding.viewPagerProfil.adapter = tabsAdapter
+
+        // 3. Hubungkan TabLayout & ViewPager2 (Sesuai Modul P10)
+        TabLayoutMediator(binding.tabLayoutProfil, binding.viewPagerProfil) { tab, position ->
+            when (position) {
+                0 -> {
+                    tab.text = "Kontak & Portal"
+                    val badge = tab.getOrCreateBadge()
+                    badge.isVisible = true
+                    badge.number = 4 // Jumlah kontak penting
+                }
+                1 -> tab.text = "Info Aplikasi"
             }
-        }
-
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_list_item_1,
-            menuProfilList
-        )
-        binding.listViewProfil.adapter = adapter
-
-        binding.listViewProfil.setOnItemClickListener { _, _, position, _ ->
-            val selectedItem = menuProfilList[position]
-            Toast.makeText(requireContext(), "Membuka: $selectedItem", Toast.LENGTH_SHORT).show()
-        }
+        }.attach()
     }
 
     override fun onDestroyView() {
